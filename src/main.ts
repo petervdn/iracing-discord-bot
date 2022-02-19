@@ -4,6 +4,7 @@ import { createConnection } from 'typeorm';
 import { User } from './entity/User';
 import { listUsers } from './bot-commands/list-users';
 import { addUser } from './bot-commands/add-user';
+import { help } from './bot-commands/help';
 
 const main = async () => {
   try {
@@ -25,6 +26,10 @@ const main = async () => {
           }
           case 'listusers': {
             listUsers({ users, message });
+            break;
+          }
+          case 'help': {
+            help({ message });
             break;
           }
         }

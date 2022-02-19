@@ -1,6 +1,6 @@
 import { Client, Intents, Message, MessageOptions, MessagePayload } from 'discord.js';
 
-const botCommandTypes = ['adduser', 'listusers'] as const;
+export const botCommandTypes = ['adduser', 'listusers', 'help'] as const;
 type BotCommandType = typeof botCommandTypes[number];
 export type BotCommand = { type: BotCommandType; args: Array<string> };
 
