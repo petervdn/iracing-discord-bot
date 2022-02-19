@@ -1,47 +1,37 @@
 import { Client, Intents, Message, MessageOptions, MessagePayload } from 'discord.js';
 
-const botCommands = ['addUser', 'listUsers'] as const;
-type BotCommand = typeof botCommands[number];
+const botCommandTypes = ['adduser', 'listusers'] as const;
+type BotCommandType = typeof botCommandTypes[number];
+type BotCommand = { type: BotCommandType; args: Array<string> };
+
 const COMMAND_PREFIX = '!';
 
 export const connectBot = (token?: string) =>
-  new Promise((resolve) => {
+  new Promise<Client>((resolve) => {
     const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
-    client.once('ready', resolve);
-
-    client.on('messageCreate', (message) => {
-      const command = parseCommand(message.content);
-      if (command) {
-        typeMessage(JSON.stringify(command), message.channel);
-      }
-    });
-
+    client.once('ready', () => resolve(client));
     client.login(token);
   });
 
-const parseCommand = (
-  messageText: string,
-): { command: BotCommand; args: Array<string> } | undefined => {
-  if (!messageText.startsWith(COMMAND_PREFIX)) {
-    return undefined;
-  }
-
-  const split = messageText.substring(1).split(' ');
-  const [firstWord, ...args] = split;
-  if (isCommand(firstWord)) {
-    return { command: firstWord, args };
+export const parseCommand = (messageText: string): BotCommand | undefined => {
+  if (messageText.startsWith(COMMAND_PREFIX)) {
+    const [firstWord, ...args] = messageText.substring(1).split(' ');
+    if (isCommandType(firstWord)) {
+      return { type: firstWord, args };
+    }
   }
 
   return undefined;
 };
 
-const isCommand = (value: string): value is BotCommand => (botCommands as any).includes(value);
+const isCommandType = (value: string): value is BotCommandType =>
+  (botCommandTypes as any).includes(value);
 
-const typeMessage = (
+export const typeMessage = (
   message: string | MessagePayload | MessageOptions,
   channel: Message['channel'],
-  typingTimeout = 1500,
+  typingTimeout = 1700,
 ) => {
   channel.sendTyping();
   setTimeout(() => {
