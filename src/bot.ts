@@ -8,7 +8,9 @@ const COMMAND_PREFIX = '!';
 
 export const connectBot = (token?: string) =>
   new Promise<Client>((resolve) => {
-    const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+    const client = new Client({
+      intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS],
+    });
 
     client.once('ready', () => resolve(client));
     client.login(token);

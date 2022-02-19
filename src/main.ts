@@ -3,7 +3,7 @@ import { connectBot, parseCommand } from './bot';
 import { createConnection } from 'typeorm';
 import { User } from './entity/User';
 import { listUsers } from './bot-commands/list-users';
-import { addUsers } from './bot-commands/add-user';
+import { addUser } from './bot-commands/add-user';
 
 const main = async () => {
   try {
@@ -14,12 +14,13 @@ const main = async () => {
 
     botClient.on('messageCreate', async (message) => {
       const command = parseCommand(message.content);
+
       if (command) {
         let users = db.getRepository(User);
 
         switch (command.type) {
           case 'adduser': {
-            addUsers({ users, message, command });
+            addUser({ users, message, command });
             break;
           }
           case 'listusers': {
