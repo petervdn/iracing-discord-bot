@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { Client, Intents } from 'discord.js';
+import { Client, Intents, Message, MessageOptions, MessagePayload } from 'discord.js';
 
 const connectBot = () => {
   const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
@@ -8,13 +8,24 @@ const connectBot = () => {
     console.log('Ready!');
   });
 
-  client.on('message', (message) => {
+  client.on('messageCreate', (message) => {
     if (message.content.startsWith('!')) {
-      message.reply(`Replying to ${message.author.username}`);
+      sendMessage(`Replying to ${message.author.username}`, message.channel);
     }
   });
 
   client.login(process.env.BOT_TOKEN);
+};
+
+const sendMessage = (
+  message: string | MessagePayload | MessageOptions,
+  channel: Message['channel'],
+  typingTimeout = 1500,
+) => {
+  channel.sendTyping();
+  setTimeout(() => {
+    channel.send(message);
+  }, typingTimeout);
 };
 
 connectBot();
