@@ -1,7 +1,9 @@
 import 'dotenv/config';
-import { connectBot, parseCommand, typeMessage } from './bot';
+import { connectBot, parseCommand } from './bot';
 import { createConnection } from 'typeorm';
 import { User } from './entity/User';
+import { listUsers } from './bot-commands/list-users';
+import { addUsers } from './bot-commands/add-user';
 
 const main = async () => {
   try {
@@ -13,12 +15,15 @@ const main = async () => {
     botClient.on('messageCreate', async (message) => {
       const command = parseCommand(message.content);
       if (command) {
+        let users = db.getRepository(User);
+
         switch (command.type) {
           case 'adduser': {
+            addUsers({ users, message, command });
             break;
           }
           case 'listusers': {
-            typeMessage(JSON.stringify(await db.manager.find(User)), message.channel);
+            listUsers({ users, message });
             break;
           }
         }

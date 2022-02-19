@@ -2,7 +2,7 @@ import { Client, Intents, Message, MessageOptions, MessagePayload } from 'discor
 
 const botCommandTypes = ['adduser', 'listusers'] as const;
 type BotCommandType = typeof botCommandTypes[number];
-type BotCommand = { type: BotCommandType; args: Array<string> };
+export type BotCommand = { type: BotCommandType; args: Array<string> };
 
 const COMMAND_PREFIX = '!';
 
@@ -31,7 +31,7 @@ const isCommandType = (value: string): value is BotCommandType =>
 export const typeMessage = (
   message: string | MessagePayload | MessageOptions,
   channel: Message['channel'],
-  typingTimeout = 1700,
+  typingTimeout = 1400,
 ) => {
   channel.sendTyping();
   setTimeout(() => {

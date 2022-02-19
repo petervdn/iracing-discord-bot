@@ -6,11 +6,11 @@ export class User {
   id: number | undefined;
 
   @Column('text')
-  firstName: string | undefined;
+  discordUserId: string | undefined;
 
   @Column('text')
-  lastName: string | undefined;
+  iRacingUserId: string | undefined;
 
-  @Column('integer')
-  age: number | undefined;
+  @Column('text')
+  iRatingHistory: string | undefined;
 }
