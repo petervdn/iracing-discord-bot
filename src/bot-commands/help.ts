@@ -6,5 +6,5 @@ type Props = {
 };
 
 export const help = ({ message }: Props) => {
-  typeMessage(`Available commands: \`${botCommandTypes}\``, message.channel);
+  typeMessage(`Available commands: ${botCommandTypes.join(', ')}`, message.channel);
 };

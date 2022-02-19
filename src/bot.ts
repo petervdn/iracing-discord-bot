@@ -37,6 +37,6 @@ export const typeMessage = (
 ) => {
   channel.sendTyping();
   setTimeout(() => {
-    channel.send(message);
+    channel.send(`\`${message}\``);
   }, typingTimeout);
 };
