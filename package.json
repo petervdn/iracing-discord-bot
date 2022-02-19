@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "main": "npx ts-node src/index.ts",
+    "main": "npx ts-node src/main.ts",
     "lint": "npx eslint src/**/*.ts",
     "fix": "npx eslint src/**/*.ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
